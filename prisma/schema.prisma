@@ -12,11 +12,26 @@ model User {
     id Int @id @default(autoincrement())
 
     fullname String
-    email    String
+    email    String   @unique
     password String
+    role     UserRole @default(USER)
+
+    provider   String?
+    providerId String?
+
+    cart             Cart?
+    order            Order[]
+    verificationCode VerificationCode?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Category {
+    id Int @id @default(autoincrement())
+
+    name     String    @unique
+    products Product[]
 }
 
 model Product {
@@ -25,6 +40,110 @@ model Product {
     name    String
     imaeUrl String
 
+    category   Category @relation(fields: [categoryId], references: [id])
+    categoryId Int
+
+    ingredients Ingredient[]
+    variants    Variants[]
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+model Ingredient {
+    id Int @id @default(autoincrement())
+
+    name   String
+    price  Int
+    imgUrl String
+
+    produts  Product[]
+    cartItem CartItem[]
+}
+
+model Variants {
+    id Int @id @default(autoincrement())
+
+    price    Int
+    size     Int?
+    pizzaTpe Int?
+
+    product   Product    @relation(fields: [productId], references: [id])
+    productId Int
+    cartItem  CartItem[]
+}
+
+model Cart {
+    id Int @id @default(autoincrement())
+
+    user   User? @relation(fields: [userId], references: [id])
+    userId Int?  @unique
+
+    token       String
+    totalAmount Int    @default(0)
+
+    createdAt DateTime   @default(now())
+    updatedAt DateTime   @updatedAt
+    cartItem  CartItem[]
+}
+
+model CartItem {
+    id Int @id @default(autoincrement())
+
+    cart   Cart @relation(fields: [cartId], references: [id])
+    cartId Int
+
+    variants   Variants @relation(fields: [variantsId], references: [id])
+    variantsId Int
+
+    quantity Int
+
+    ingredients Ingredient[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Order {
+    id Int @id @default(autoincrement())
+
+    user   User? @relation(fields: [userId], references: [id])
+    userId Int?
+
+    token String
+
+    totalAmount Int
+    status      OrderStatus
+    paymentId   String?
+
+    items Json
+
+    fullName String
+    email    String
+    phone    String
+    address  String
+    comment  String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model VerificationCode {
+    id Int @id @default(autoincrement())
+
+    user   User @relation(fields: [userId], references: [id])
+    userId Int  @unique
+
+    createdAt DateTime @default(now())
+}
+
+enum OrderStatus {
+    PENDING
+    SUCCEEDED
+    CANCELLED
+}
+
+enum UserRole {
+    USER
+    ADMIN
 }
