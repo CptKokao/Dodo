@@ -2,9 +2,9 @@ import { prisma } from "@/prisma/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const query = req.nextUrl.searchParams.get("q") || "";
+  const query = req.nextUrl.searchParams.get("query") || "";
 
-  const produts = await prisma.product.findMany({
+  const products = await prisma.product.findMany({
     // Строгое сравнение по имени
     // where: {
     // 	name: query
@@ -16,7 +16,8 @@ export async function GET(req: NextRequest) {
         mode: "insensitive",
       },
     },
+    take: 5,
   });
 
-  return NextResponse.json(produts);
+  return NextResponse.json(products);
 }

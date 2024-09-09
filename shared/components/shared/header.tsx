@@ -8,6 +8,7 @@ import { Container } from "./container";
 import { cn } from "@/shared/lib/utils";
 import { Button } from "../ui";
 import { ArrowRight, ShoppingCart } from "lucide-react";
+import { SearchInput } from "./search-input";
 
 interface Props {
   className?: string;
@@ -29,6 +30,10 @@ export const Header: React.FC<Props> = ({ className }) => {
             </div>
           </div>
         </Link>
+
+        <div className="mx-10 flex-1">
+          <SearchInput />
+        </div>
 
         {/* Правая часть */}
         <div>
