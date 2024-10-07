@@ -10,5 +10,7 @@ export { ProductCard } from './product-card';
 export { ProductsGroupList } from './products-group-list';
 export { GroupVariants } from './group-variants';
 export { PizzaImage } from './pizza-image';
+export { CartButton } from './cart-button';
+export { CartDrawer } from './cart-drawer';
 export { IngredientItem } from './ingredient-item';
 export * from './modals';
