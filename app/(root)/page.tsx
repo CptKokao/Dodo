@@ -1,11 +1,9 @@
-import { ingredients } from '@/prisma/constans';
 import { prisma } from '@/prisma/prisma-client';
-import { Filters, ProductCard, ProductsGroupList } from '@/shared/components/shared';
+import { Filters, ProductsGroupList } from '@/shared/components/shared';
 import { Container } from '@/shared/components/shared/container';
 import { Title } from '@/shared/components/shared/title';
 import { TopBar } from '@/shared/components/shared/top-bar';
-import { Button } from '@/shared/components/ui/button';
-import Image from 'next/image';
+import { Suspense } from 'react';
 
 export default async function Home() {
 	const categories = await prisma.category.findMany({
@@ -31,7 +29,9 @@ export default async function Home() {
 				<div className='flex gap-[80px]'>
 					{/* Фильтрация */}
 					<div className='w-[250px]'>
-						<Filters />
+						<Suspense>
+							<Filters />
+						</Suspense>
 					</div>
 
 					{/* Список товаров */}

@@ -14,19 +14,19 @@ export type CartStateItem = {
 };
 
 interface ReturnProps {
-	items: CartStateItem[];
+	items: CartStateItem[] | [];
 	totalAmount: number;
 }
 
 export const getCartDetails = (data: CartDTO): ReturnProps => {
-	const items = data.items.map((item) => ({
+	const items = data.cartItem?.map((item) => ({
 		id: item.id,
 		quantity: item.quantity,
-		name: item.productItem.product.name,
-		imageUrl: item.productItem.product.imageUrl,
+		name: item.variants.product.name,
+		imageUrl: item.variants.product.imgUrl,
 		price: calcCartItemTotalPrice(item),
-		pizzaSize: item.productItem.size,
-		pizzaType: item.productItem.pizzaType,
+		pizzaSize: item.variants.size,
+		pizzaType: item.variants.pizzaType,
 		disabled: false,
 		ingredients: item.ingredients.map((ingredient) => ({
 			name: ingredient.name,

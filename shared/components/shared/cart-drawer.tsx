@@ -20,7 +20,7 @@ import { getCartItemDetails } from '@/shared/lib';
 import { PizzaSize, PizzaType } from '@/shared/constants/pizza';
 import { Title } from './title';
 import { cn } from '@/shared/lib/utils';
-// import { useCart } from '@/shared/hooks';
+import { useCart } from '@/shared/hooks';
 
 export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 	const { totalAmount, updateItemQuantity, items, removeCartItem } = useCart();
@@ -40,7 +40,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 					{totalAmount > 0 && (
 						<SheetHeader>
 							<SheetTitle>
-								В корзине <span className='font-bold'>{items.length} товара</span>
+								В корзине <span className='font-bold'>{items?.length} товара</span>
 							</SheetTitle>
 						</SheetHeader>
 					)}
@@ -65,7 +65,7 @@ export const CartDrawer: React.FC<React.PropsWithChildren> = ({ children }) => {
 					{totalAmount > 0 && (
 						<>
 							<div className='-mx-6 mt-5 overflow-auto flex-1'>
-								{items.map((item) => (
+								{items?.map((item) => (
 									<div key={item.id} className='mb-2'>
 										<CartDrawerItem
 											id={item.id}

@@ -1,11 +1,11 @@
 'use client';
 
 import { ProductWithRelations } from '@/@types/prisma';
-// import { useCartStore } from '@/shared/store';
 import React from 'react';
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { ChoosePizzaForm } from './choose-pizza-form';
 import { ChooseProductForm } from './choose-product-form';
+import { useCartStore } from '@/shared/store';
 
 interface Props {
 	product: ProductWithRelations;
@@ -13,25 +13,25 @@ interface Props {
 }
 
 export const ProductForm: React.FC<Props> = ({ product, onSubmit: _onSubmit }) => {
-	// const [addCartItem, loading] = useCartStore((state) => [state.addCartItem, state.loading]);
+	const [addCartItem, loading] = useCartStore((state) => [state.addCartItem, state.loading]);
 
 	const firstItem = product.variants[0];
 	const isPizzaForm = Boolean(firstItem.pizzaType);
 
-	const onSubmit = async (productItemId?: number, ingredients?: number[]) => {
+	const onSubmit = async (variantsId?: number, ingredients?: number[]) => {
 		try {
-			// const itemId = productItemId ?? firstItem.id;
+			const itemId = variantsId ?? firstItem.id;
 
-			// await addCartItem({
-			// 	productItemId: itemId,
-			// 	ingredients,
-			// });
+			await addCartItem({
+				variantsId: itemId,
+				ingredients,
+			});
 
-			// toast.success(product.name + ' добавлена в корзину');
+			toast.success(product.name + ' добавлена в корзину');
 
 			_onSubmit?.();
 		} catch (err) {
-			// toast.error('Не удалось добавить товар в корзину');
+			toast.error('Не удалось добавить товар в корзину');
 			console.error(err);
 		}
 	};
@@ -44,8 +44,7 @@ export const ProductForm: React.FC<Props> = ({ product, onSubmit: _onSubmit }) =
 				ingredients={product.ingredients}
 				items={product.variants}
 				onSubmit={onSubmit}
-				loading={false}
-				// loading={loading}
+				loading={loading}
 			/>
 		);
 	}
@@ -56,8 +55,7 @@ export const ProductForm: React.FC<Props> = ({ product, onSubmit: _onSubmit }) =
 			name={product.name}
 			onSubmit={onSubmit}
 			price={firstItem.price}
-			loading={false}
-			// loading={loading}
+			loading={loading}
 		/>
 	);
 };
