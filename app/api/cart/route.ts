@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
 	try {
 		let token = req.cookies.get('cartToken')?.value;
-		console.log(token);
+
 		if (!token) {
 			console.log('token');
 			token = crypto.randomUUID();
