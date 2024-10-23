@@ -1,21 +1,23 @@
 'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod';
 import { FormProvider, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import {
-	CheckoutAddressForm,
-	CheckoutCart,
-	CheckoutPersonalForm,
 	CheckoutSidebar,
 	Container,
 	Title,
+	CheckoutAddressForm,
+	CheckoutCart,
+	CheckoutPersonalForm,
 } from '@/shared/components/shared';
 import { CheckoutFormValues, checkoutFormSchema } from '@/shared/constants';
 import { useCart } from '@/shared/hooks';
-// import { createOrder } from '@/app/actions';
+import { createOrder } from '@/app/actions';
+import toast from 'react-hot-toast';
 import React from 'react';
 // import { useSession } from 'next-auth/react';
+// import { Api } from '@/shared/services/api-client';
 
 export default function CheckoutPage() {
 	const [submitting, setSubmitting] = React.useState(false);
@@ -34,8 +36,41 @@ export default function CheckoutPage() {
 		},
 	});
 
+	// React.useEffect(() => {
+	// 	async function fetchUserInfo() {
+	// 		const data = await Api.auth.getMe();
+	// 		const [firstName, lastName] = data.fullName.split(' ');
+
+	// 		form.setValue('firstName', firstName);
+	// 		form.setValue('lastName', lastName);
+	// 		form.setValue('email', data.email);
+	// 	}
+
+	// 	if (session) {
+	// 		fetchUserInfo();
+	// 	}
+	// }, [session]);
+
 	const onSubmit = async (data: CheckoutFormValues) => {
-		console.log(data);
+		try {
+			setSubmitting(true);
+
+			const url = await createOrder(data);
+
+			toast.error('Заказ успешно оформлен! 📝 Переход на оплату... ', {
+				icon: '✅',
+			});
+
+			if (url) {
+				location.href = url;
+			}
+		} catch (err) {
+			console.log(err);
+			setSubmitting(false);
+			toast.error('Не удалось создать заказ', {
+				icon: '❌',
+			});
+		}
 	};
 
 	const onClickCountButton = (id: number, quantity: number, type: 'plus' | 'minus') => {
