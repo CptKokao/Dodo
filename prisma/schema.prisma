@@ -22,7 +22,7 @@ model User {
     cart             Cart?
     order            Order[]
     verificationCode VerificationCode?
-    verified         DateTime
+    verified         DateTime?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -135,7 +135,11 @@ model VerificationCode {
     user   User @relation(fields: [userId], references: [id])
     userId Int  @unique
 
+    code String
+
     createdAt DateTime @default(now())
+
+    @@unique([userId, code])
 }
 
 enum OrderStatus {
