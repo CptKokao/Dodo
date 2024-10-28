@@ -1,5 +1,5 @@
 import { prisma } from '@/prisma/prisma-client';
-import { Filters, ProductsGroupList } from '@/shared/components/shared';
+import { Filters, ProductsGroupList, Stories } from '@/shared/components/shared';
 import { Container } from '@/shared/components/shared/container';
 import { Title } from '@/shared/components/shared/title';
 import { TopBar } from '@/shared/components/shared/top-bar';
@@ -16,6 +16,8 @@ export default async function Home({ searchParams }: { searchParams: GetSearchPa
 			</Container>
 
 			<TopBar categories={categories} />
+
+			<Stories />
 
 			<Container className='mt-10 pb-14'>
 				<div className='flex gap-[80px]'>
